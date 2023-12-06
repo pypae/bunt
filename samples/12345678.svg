@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="560" height="560" viewBox="-280.0 -280.0 560 560">
+<defs>
+</defs>
+<rect x="-280" y="-280" width="560" height="560" fill="white" />
+<circle cx="-128" cy="-128" r="128" fill="gold" />
+<rect x="-128" y="-128" width="128" height="128" fill="gold" />
+<circle cx="-128" cy="128" r="128" fill="lime" />
+<rect x="-256" y="0" width="128" height="128" fill="lime" />
+<rect x="-128" y="0" width="128" height="128" fill="lime" />
+<rect x="-128" y="128" width="128" height="128" fill="lime" />
+<circle cx="128" cy="-128" r="128" fill="lime" />
+<rect x="0" y="-256" width="128" height="128" fill="lime" />
+<rect x="128" y="-256" width="128" height="128" fill="lime" />
+<rect x="0" y="-128" width="128" height="128" fill="lime" />
+<circle cx="128" cy="128" r="128" fill="dodgerblue" />
+<rect x="0" y="0" width="128" height="128" fill="dodgerblue" />
+<rect x="0" y="128" width="128" height="128" fill="dodgerblue" />
+</svg>
