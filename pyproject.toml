@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-opencv-python-headless = "^4.8.1.78"
+opencv-python = "^4.8.1.78"
 drawsvg = "^2.3.0"
 numpy = "^1.26.2"
 imutils = "^0.5.4"
@@ -19,7 +19,6 @@ isort = "^5.13.2"
 streamlit = "^1.29.0"
 watchdog = "^3.0.0"
 cairosvg = "^2.7.1"
-opencv-python = "^4.8.1.78"
 
 [build-system]
 requires = ["poetry-core"]
