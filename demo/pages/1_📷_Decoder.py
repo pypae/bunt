@@ -8,7 +8,7 @@ from bunt.detect import detect_code, draw_contour, extract_code, threshold
 
 
 def main():
-    img_file_buffer = st.camera_input("Take a picture of a `bunt` code to decode")
+    img_file_buffer = st.camera_input('Take a picture of a "bunt" code to decode')
 
     if img_file_buffer is None:
         return
@@ -59,8 +59,34 @@ sidebar.title("Bunt")
 sidebar.markdown(
     """Colorful, scannable QR-like codes. 🌈 
 
-Inspired by Spotify codes and [this blog post](https://boonepeter.github.io/posts/spotify-codes-part-2) in particular."""
+Inspired by Spotify codes and [this blog post](https://boonepeter.github.io/posts/spotify-codes-part-2) in particular.
+
+**But Why?** Because they look cool and I wanted to learn the basics of image processing and computer vision."""
 )
 
 st.header("Decoder")
 main()
+
+st.markdown(
+    """
+### How the decoder works
+The decoder consists of the following steps:
+1. Find the code in the image. 
+  The detection algorithm is simple and not very robust. 
+  We look for the largest square contour in the image.
+  It is largely inspired by [this tutorial](https://pyimagesearch.com/2021/10/27/automatically-ocring-receipts-and-scans/).
+  For implementation details see [`bunt/detect.py`](https://github.com/pypae/bunt/blob/main/bunt/detect.py).
+1. Transform the detected area to a 560x560 pixel image.
+1. Detect the color and shape of each quadrant of the code.
+  To detect the color, we average the color of the pixels around a circle in the center of the quadrant.
+  We then compute the euclidian distance to the list of known colors and pick the closest one.
+  To detect the shape, we look at each corner of the quadrant and check if it is filled.
+  See the debug output above for an example.
+  For implementation details see [`bunt/decode.py`](https://github.com/pypae/bunt/blob/main/bunt/decode.py).
+1. Verify the CRC and extract the original data.
+
+### Things to try next
+- Reduce the error rate in color detection by adjusting color balance and/or using a different color space.
+- Improve the detection algorithm. (E.g. use a neural network.)
+"""
+)
