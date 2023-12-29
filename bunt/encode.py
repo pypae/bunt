@@ -6,7 +6,7 @@ from bunt import crc
 from bunt.constants import COLORS, INSET, POSITIONS, SHAPES, WIDTH
 
 
-def create_code(media_ref: int):
+def create_code(media_ref: int) -> draw.Drawing:
     assert media_ref.bit_length() <= 25
     encoded_data = crc.sign(media_ref)
 
@@ -55,5 +55,4 @@ if __name__ == "__main__":
     media_ref = 12345678
     drawing = create_code(media_ref)
     out_file = Path(__file__).parent / f"../samples/{media_ref}.svg"
-    drawing.save_svg(str(out_file))
     drawing.save_svg(str(out_file))

@@ -2,18 +2,18 @@ from pathlib import Path
 
 import cv2
 import imutils
-import numpy as np
+from cv2.typing import MatLike
 from imutils.perspective import four_point_transform
 
 
-def threshold(img: np.ndarray) -> np.ndarray:
+def threshold(img: MatLike) -> MatLike:
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     ret, thresh = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)
     return thresh
 
 
-def detect_code(img: np.ndarray) -> np.ndarray:
+def detect_code(img: MatLike) -> MatLike | None:
     thresh = threshold(img)
     contours = cv2.findContours(thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     contours = imutils.grab_contours(contours)
@@ -24,7 +24,7 @@ def detect_code(img: np.ndarray) -> np.ndarray:
         peri = cv2.arcLength(cnt, True)
         approx = cv2.approxPolyDP(cnt, 0.02 * peri, True)
         # if our approximated contour has four points, then we can
-        # assume we have found the outline of the receipt
+        # assume we have found the outline of the code
         if len(approx) == 4:
             code_contour = approx
             break
@@ -32,13 +32,13 @@ def detect_code(img: np.ndarray) -> np.ndarray:
     return code_contour
 
 
-def draw_contour(img: np.ndarray, contour: np.ndarray) -> np.ndarray:
+def draw_contour(img: MatLike, contour: MatLike) -> MatLike:
     detected = img.copy()
     cv2.drawContours(detected, [contour], 0, (0, 255, 0), 3)
     return detected
 
 
-def extract_code(img: np.ndarray, contour: np.ndarray) -> np.ndarray:
+def extract_code(img: MatLike, contour: MatLike) -> MatLike:
     warped = four_point_transform(img.copy(), contour.reshape(4, 2))
     return warped
 

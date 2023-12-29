@@ -4,12 +4,13 @@ from pathlib import Path
 
 import cv2
 import numpy as np
+from cv2.typing import MatLike
 
 from bunt import crc
 from bunt.constants import BGR_TO_COLORS, INSET, POSITIONS, SHAPES, WIDTH
 
 
-def read_code(img: np.ndarray) -> int:
+def read_code(img: MatLike) -> int:
     margin = 24
     code = 0
     white_fill = (255,)
