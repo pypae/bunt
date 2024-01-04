@@ -34,8 +34,8 @@ input = st.number_input(
     max_value=2**25,
 )
 code = create_code(input)
-html = code.as_html()
-st.write(html, unsafe_allow_html=True)
+svg = code.as_svg()
+st.image(svg, use_column_width="always", caption=f"Encoded value: {input}")
 st.markdown(f"Decode on another device: [{base_url}/Decoder]({base_url}/Decoder)")
 
 st.markdown(
