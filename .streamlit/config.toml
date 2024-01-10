@@ -1,0 +1,3 @@
+[theme]
+# Always use dark mode because there needs to be enough contrast between the background and the code
+base="dark"
