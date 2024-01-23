@@ -7,15 +7,16 @@ from imutils.perspective import four_point_transform
 
 
 def threshold(img: MatLike) -> MatLike:
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    ret, thresh = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)
+    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    # ret, thresh = cv2.Canny(blurred, 240, 250)
+    thresh = cv2.Canny(img, 200, 250)
     return thresh
 
 
 def detect_code(img: MatLike) -> MatLike | None:
     thresh = threshold(img)
-    contours = cv2.findContours(thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    contours = cv2.findContours(thresh.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     contours = imutils.grab_contours(contours)
     contours = sorted(contours, key=cv2.contourArea, reverse=True)
     code_contour = None
