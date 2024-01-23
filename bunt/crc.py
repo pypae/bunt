@@ -1,3 +1,27 @@
+from bunt.constants import SHUFFLE_PERMUTATION, REVERSE_PERMUTATION
+
+
+def _shuffle_bits(number: int, permutation: list[int]) -> int:
+    # Convert the number to a string of bits
+    bits_str = f"{number:028b}"
+
+    # Apply the permutation and join the shuffled bits
+    shuffled_bits_str = ''.join(bits_str[i] for i in permutation)
+
+    # Convert the shuffled bits back to an integer
+    shuffled_number = int(shuffled_bits_str, 2)
+
+    return shuffled_number
+
+
+def _shuffle(number: int) -> int:
+    return _shuffle_bits(number, SHUFFLE_PERMUTATION)
+
+
+def _unshuffle(number: int) -> int:
+    return _shuffle_bits(number, REVERSE_PERMUTATION)
+
+
 def _compute_crc(data: int, polynomial: int) -> int:
     """Compute the CRC value for given data using the specified polynomial.
     See https://en.wikipedia.org/wiki/Cyclic_redundancy_check#Computation for details.
@@ -21,10 +45,13 @@ def generate_crc(data: int, polynomial: int) -> int:
     )  # Mask the CRC value.
 
 
-def sign(data: int, polynomial: int = 0b1011) -> int:
+def sign(data: int, polynomial: int = 0b1011, shuffle: bool = True) -> int:
     """Generate a signature for the given message using the specified polynomial."""
     crc = generate_crc(data, polynomial)
-    return (data << polynomial.bit_length() - 1) | crc
+    data = (data << polynomial.bit_length() - 1) | crc
+    if shuffle:
+        data = _shuffle(data)
+    return data
 
 
 def verify(received_data: int, polynomial: int = 0b1011) -> bool:
@@ -32,12 +59,15 @@ def verify(received_data: int, polynomial: int = 0b1011) -> bool:
     return _compute_crc(received_data, polynomial) == 0
 
 
-def get_message(received_data: int, polynomial: int = 0b1011) -> int:
+def get_message(received_data: int, polynomial: int = 0b1011, shuffle: bool = True) -> int:
     """Verify the recieved data and get the original message without the CRC."""
+    if shuffle:
+        received_data = _unshuffle(received_data)
+    polynomial_degree = polynomial.bit_length() - 1
     if not verify(received_data, polynomial):
         raise ValueError("The received data is not valid.")
-    polynomial_degree = polynomial.bit_length() - 1
-    return received_data >> polynomial_degree
+    data = received_data >> polynomial_degree
+    return data
 
 
 if __name__ == "__main__":

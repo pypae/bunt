@@ -59,9 +59,9 @@ The data is encoded as follows:
 For implementation details see [`bunt/encode.py`](https://github.com/pypae/bunt/blob/main/bunt/encode.py).
 
 ### Things to try next
-- Add an indicator for the orientation of the code. (E.g. a dot in the top right quadrant.)
-- Use an error *correcting* code instead or in addition to an error *detecting* code.
-- Shuffle the bits after adding the error detecting code. 
+- [ ] Add an indicator for the orientation of the code. (E.g. a dot in the top right quadrant.)
+- [ ] Use an error *correcting* code instead or in addition to an error *detecting* code.
+- [x] Shuffle the bits after adding the error detecting code. 
   This would make the code more robust against errors that affect a whole quadrant.
 """
 )
