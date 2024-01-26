@@ -18,7 +18,7 @@ def read_code(img: MatLike) -> int:
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    shape_mask = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)[1]
+    shape_mask = cv2.threshold(blurred, 230, 255, cv2.THRESH_BINARY)[1]
 
     # We reverse the positions to make constructing the code easier by shifting right.
     # (When generating the code we shift left.)
