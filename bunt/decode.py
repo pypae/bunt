@@ -10,15 +10,22 @@ from bunt import crc
 from bunt.constants import BGR_TO_COLORS, INSET, POSITIONS, SHAPES, WIDTH
 
 
+def _get_shape_mask(img: MatLike) -> MatLike:
+    # Source: https://stackoverflow.com/questions/56877246/detecting-contours-of-white-object
+    lower_white = (180, 180, 180)
+    higher_white = (255, 255, 255)
+    white_range = cv2.inRange(img, lower_white, higher_white)
+    return white_range
+
+
 def read_code(img: MatLike) -> int:
     margin = 24
     code = 0
     white_fill = (255,)
     no_border = -1
+    white_threshold = 240
 
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    shape_mask = cv2.threshold(blurred, 230, 255, cv2.THRESH_BINARY)[1]
+    shape_mask = _get_shape_mask(img)
 
     # We reverse the positions to make constructing the code easier by shifting right.
     # (When generating the code we shift left.)
@@ -63,7 +70,7 @@ def read_code(img: MatLike) -> int:
             m = np.zeros(img.shape[:2], np.uint8)
             cv2.circle(m, p, 10, white_fill, no_border)
             color = cv2.mean(shape_mask, mask=m)[:1][0]
-            filled = color < 240
+            filled = color < white_threshold
             shape[d] = filled
             # Annotate the image for debugging
             cv2.putText(
